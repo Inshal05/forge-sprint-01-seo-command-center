@@ -39,3 +39,5 @@ Format:
 
   - [12:21] Decided to keep issue detection fully deterministic → reserve Ollama exclusively for title generation, meta generation, redirect recommendations, and report enhancements.
   - [12:53] Added fix generation pipeline → integrated seo/fixer.py and populated redirect_map in report.json.
+  - [13:01] Expanded title fix generation beyond missing titles → added handling for duplicate, too-short and too-long titles so the fixer produces actionable recommendations on real exports.
+  - [13:07] Added CSV fix exports → generated title_fixes.csv and redirect_map.csv from report fixes to create client-ready deliverables.

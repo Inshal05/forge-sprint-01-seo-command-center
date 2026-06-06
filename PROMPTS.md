@@ -68,3 +68,17 @@ Format per entry:
 - **For:** Adding title fixes and redirect map generation.
 
 - **Revised?** Yes. Started with deterministic fixes before introducing Ollama.
+### 6
+
+- **Prompt:** "Extend the fixer pipeline to generate title recommendations for duplicate, too-short and too-long titles instead of only missing titles."
+
+- **For:** Increasing fix coverage and populating the fixes section of report.json.
+
+- **Revised?** Yes. The first implementation only handled missing titles, but the sample export contained mostly duplicate and invalid-length titles.
+### 7
+
+- **Prompt:** "Export generated title fixes and redirect recommendations as CSV files suitable for direct client handoff."
+
+- **For:** Creating deliverables required by the competition's champion tier.
+
+- **Revised?** No.
