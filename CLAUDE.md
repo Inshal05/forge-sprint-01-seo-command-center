@@ -160,3 +160,6 @@ Before submission:
 - report generation already exists in server.py.
 - seo_set_fixes() is the intended hook for title fixes and redirect maps.
 - Hidden export compatibility is more important than optimizing for the sample export.
+- Title and meta recommendations should only be generated for text/html pages.
+- Non-HTML assets (images, CSS, JS, PDFs) must be excluded from title and meta fix generation.
+- Fix quality is improved by filtering assets before generating recommendations.
