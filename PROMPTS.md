@@ -82,3 +82,10 @@ Format per entry:
 - **For:** Creating deliverables required by the competition's champion tier.
 
 - **Revised?** No.
+### 8
+
+- **Prompt:** "Extend the fixer to generate meta description recommendations for missing, duplicate and overlength meta descriptions."
+
+- **For:** Expanding the fix engine beyond title generation.
+
+- **Revised?** No.
