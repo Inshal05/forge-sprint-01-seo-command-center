@@ -77,6 +77,74 @@ def generate_title_fixes(rows):
 
     return fixes
 
+def generate_meta_fixes(rows):
+    fixes = []
+
+    meta_groups = defaultdict(list)
+
+    for row in rows:
+        meta = (row.get("Meta Description 1", "") or "").strip()
+
+        if meta:
+            meta_groups[meta].append(row)
+
+    duplicate_meta = {
+        meta
+        for meta, pages in meta_groups.items()
+        if len(pages) > 1
+    }
+
+    for row in rows:
+
+        url = row.get("Address", "")
+        h1 = (row.get("H1-1", "") or "").strip()
+
+        meta = (
+            row.get("Meta Description 1", "")
+            or ""
+        ).strip()
+
+        meta_length = _int(
+            row.get("Meta Description 1 Length")
+        )
+
+        new_meta = None
+
+        # Missing meta description
+        if not meta and h1:
+
+            new_meta = (
+                f"{h1} - Learn more about our services and solutions."
+            )
+
+        # Meta description too long
+        elif meta and meta_length > 155:
+
+            new_meta = meta[:155]
+
+        # Duplicate meta description
+        elif meta and meta in duplicate_meta:
+
+            if h1:
+                new_meta = (
+                    f"{h1} - Learn more about our services and solutions."
+                )
+
+        if new_meta:
+
+            new_meta = new_meta[:155]
+
+            if new_meta != meta:
+                fixes.append(
+                    {
+                        "url": url,
+                        "old": meta,
+                        "new": new_meta
+                    }
+                )
+
+    return fixes
+
 
 def generate_redirect_map(rows):
     redirects = []
