@@ -41,7 +41,7 @@ def _emit(event, data):
 # ----- pipeline tools (importable by run.py without MCP) -----
 def seo_load(export_dir: str) -> dict:
     rows = detector.load_rows(export_dir)
-    RUN.update({"rows": rows, "urls": len(rows), "issues": [], "summary": None,
+    RUN.update({"rows": rows, "export_dir": export_dir,"urls": len(rows), "issues": [], "summary": None,
                 "site": _guess_site(rows), "status": "running"})
     _emit("loaded", {"site": RUN["site"], "urls": len(rows)})
     return {"urls": len(rows), "site": RUN["site"]}
@@ -58,7 +58,10 @@ def _guess_site(rows):
 
 
 def seo_detect() -> dict:
-    issues = detector.detect(RUN.get("rows", []))
+    issues = detector.detect(
+        RUN.get("rows", []),
+        RUN.get("export_dir")
+    )
     RUN["issues"] = issues
     RUN["summary"] = detector.summarize(issues)
     for i in issues:

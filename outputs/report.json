@@ -2,10 +2,10 @@
   "site": "nmgtechnologies.com",
   "urls_crawled": 456,
   "summary": {
-    "total_issues": 12,
+    "total_issues": 13,
     "by_severity": {
       "High": 2,
-      "Medium": 5,
+      "Medium": 6,
       "Low": 5
     }
   },
@@ -316,6 +316,24 @@
       ],
       "count": 11,
       "explanation": "Pages slower than one second."
+    },
+    {
+      "type": "missing_image_alt",
+      "severity": "Medium",
+      "affected_urls": [
+        "https://nmgtechnologies.com/hubfs/MicrosoftTeams-image%20(82).png",
+        "https://nmgtechnologies.com/hubfs/SEMPO-Hangouts-Session-\u2013-Web-Design-and-User-Experience.png",
+        "https://nmgtechnologies.com/hubfs/Startup-India-Event-2016-\u2013-Key-Highlights_.jpg",
+        "https://nmgtechnologies.com/hubfs/gitex-banner.jpg",
+        "https://nmgtechnologies.com/hubfs/hero-banner.png",
+        "https://nmgtechnologies.com/hubfs/koora-break-banner.png",
+        "https://nmgtechnologies.com/hubfs/leap-2023.jpg",
+        "https://nmgtechnologies.com/hubfs/mwc-blog.jpg",
+        "https://nmgtechnologies.com/hubfs/retail-innovation-1.png",
+        "https://nmgtechnologies.com/hubfs/softwave-banner-blog.jpg"
+      ],
+      "count": 10,
+      "explanation": "Images missing alt text."
     }
   ],
   "fixes": {

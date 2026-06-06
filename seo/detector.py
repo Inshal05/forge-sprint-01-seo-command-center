@@ -39,8 +39,27 @@ def is_html(r):  return "text/html" in (r.get("Content Type", "") or "").lower()
 def is_200(r):   return _int(r.get("Status Code")) == 200
 def indexable(r): return (r.get("Indexability", "") or "").strip().lower() == "indexable"
 
+def load_issue_csv(export_dir: str, filename: str) -> list[dict]:
+    path = os.path.join(
+        export_dir,
+        "issues_reports",
+        filename
+    )
 
-def detect(rows: list[dict]) -> list[dict]:
+    if not os.path.exists(path):
+        return []
+
+    with open(
+        path,
+        encoding="utf-8-sig",
+        newline=""
+    ) as f:
+        return list(csv.DictReader(f))
+
+def detect(
+    rows: list[dict],
+    export_dir: str | None = None
+) -> list[dict]:
     """Return a list of issue dicts: {type, severity, affected_urls, count, explanation}.
     STARTER set — extend to the full rulebook for a high score."""
     issues = []
@@ -275,7 +294,22 @@ def detect(rows: list[dict]) -> list[dict]:
         "Redirect chains or loops detected."
     )
     # ----------------------------------------------------------------------- #
+    if export_dir:
 
+        missing_alt_rows = load_issue_csv(
+            export_dir,
+            "images_missing_alt_text.csv"
+        )
+
+        add(
+            "missing_image_alt",
+            "Medium",
+            [
+                r["Address"]
+                for r in missing_alt_rows
+            ],
+            "Images missing alt text."
+        )
     return issues
 
 

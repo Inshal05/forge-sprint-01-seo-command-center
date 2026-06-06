@@ -96,3 +96,10 @@ Format per entry:
 - **For:** Improving output quality and aligning fix generation with SEO audit rules.
 
 - **Revised?** Yes — initial implementation still generated fixes for assets because filtering was only applied to title fixes; extended filtering to meta fixes as well.
+### 10
+
+- **Prompt:** "Implement missing image alt detection using images_missing_alt_text.csv instead of internal_all.csv."
+
+- **For:** Extending detector coverage to match the challenge rulebook.
+
+- **Revised?** No.
