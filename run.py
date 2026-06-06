@@ -14,6 +14,7 @@ starter writes empty fix blocks so the contract stays valid.
 """
 from __future__ import annotations
 from seo import fixer
+import seo.ollama_client as ollama_client
 import argparse, os, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -63,7 +64,7 @@ def main():
     if not recs:
         recs.append("No issues detected on this crawl.")
     server.seo_recommend(recs)
-    server.RUN["model_calls"] = 0  # starter does no model calls; champion fixes will add some
+    server.RUN["model_calls"] = ollama_client.MODEL_CALLS
     server.RUN["duration_sec"] = round(time.time() - t0, 1)
     server.seo_report()
     server.seo_export()

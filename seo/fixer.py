@@ -1,17 +1,28 @@
 from __future__ import annotations
 
 from collections import defaultdict
-
+from seo.ollama_client import ask
 
 def _int(value, default=0):
     try:
         return int(float(str(value).strip()))
     except Exception:
         return default
+def safe_truncate(text, limit):
+    if len(text) <= limit:
+        return text
 
+    return text[:limit].rsplit(" ", 1)[0]
 
 def generate_title_fixes(rows):
     fixes = []
+
+    # print("TESTING OLLAMA...")
+    # print(
+    #     ask(
+    #         "Write a short SEO title for Web Development Services"
+    #     )
+    # )
 
     # Build duplicate title map
     title_groups = defaultdict(list)
@@ -58,7 +69,8 @@ def generate_title_fixes(rows):
 
         # Missing title
         if not title and h1:
-            new_title = h1[:60]
+
+            new_title = safe_truncate(h1, 60)
 
         # Title too short
         elif title and 0 < title_length < 30:
@@ -73,7 +85,7 @@ def generate_title_fixes(rows):
             title_length > 60
             or title_pixels > 561
         ):
-            new_title = title[:60]
+            new_title = safe_truncate(title, 60)
 
         # Duplicate title
         elif title and title in duplicate_titles:
@@ -147,14 +159,10 @@ def generate_meta_fixes(rows):
         if not meta:
 
             if h1:
+
                 new_meta = (
                     f"{h1} - Learn more about our services and solutions."
                 )
-            else:
-                new_meta = (
-                    "Learn more about our services and solutions."
-                )
-
         # Meta description too long
         elif meta and meta_length > 155:
 
