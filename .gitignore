@@ -1,0 +1,6 @@
+**pycache**/
+*.pyc
+outputs/
+agent-log.md
+.DS_Store
+.vscode/
