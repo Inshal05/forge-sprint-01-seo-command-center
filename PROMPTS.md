@@ -61,3 +61,10 @@ Format per entry:
 - **For:** Planning title fixes, redirect maps and Ollama integration.
 
 - **Revised?** No.
+### 5
+
+- **Prompt:** "Review the fixer architecture and implement fix generation without breaking the reporting pipeline."
+
+- **For:** Adding title fixes and redirect map generation.
+
+- **Revised?** Yes. Started with deterministic fixes before introducing Ollama.

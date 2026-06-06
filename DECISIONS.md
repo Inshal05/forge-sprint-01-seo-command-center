@@ -38,3 +38,4 @@ Format:
   - [12:20] Updated CLAUDE.md project memory → documented architecture, detector strategy, validation workflow, and Ollama usage guidelines.
 
   - [12:21] Decided to keep issue detection fully deterministic → reserve Ollama exclusively for title generation, meta generation, redirect recommendations, and report enhancements.
+  - [12:53] Added fix generation pipeline → integrated seo/fixer.py and populated redirect_map in report.json.
