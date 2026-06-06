@@ -98,10 +98,94 @@ def seo_report() -> dict:
 
 
 def seo_export() -> dict:
+    import csv
+
     os.makedirs(OUT_DIR, exist_ok=True)
-    p = os.path.join(OUT_DIR, "report.html")
-    open(p, "w", encoding="utf-8").write(_render_html(_report_obj()))
-    _emit("exported", {"path": p}); return {"path": p}
+
+    report = _report_obj()
+
+    # HTML report
+    html_path = os.path.join(OUT_DIR, "report.html")
+
+    with open(
+        html_path,
+        "w",
+        encoding="utf-8"
+    ) as f:
+        f.write(_render_html(report))
+
+    # CSV exports
+    fixes = report.get("fixes", {})
+
+    titles = fixes.get("titles", [])
+    redirects = fixes.get("redirect_map", [])
+
+    title_csv = os.path.join(
+        OUT_DIR,
+        "title_fixes.csv"
+    )
+
+    with open(
+        title_csv,
+        "w",
+        newline="",
+        encoding="utf-8"
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "url",
+                "old",
+                "new"
+            ]
+        )
+
+        writer.writeheader()
+
+        for row in titles:
+            writer.writerow(row)
+
+    redirect_csv = os.path.join(
+        OUT_DIR,
+        "redirect_map.csv"
+    )
+
+    with open(
+        redirect_csv,
+        "w",
+        newline="",
+        encoding="utf-8"
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "from",
+                "to",
+                "reason"
+            ]
+        )
+
+        writer.writeheader()
+
+        for row in redirects:
+            writer.writerow(row)
+
+    _emit(
+        "exported",
+        {
+            "html": html_path,
+            "title_csv": title_csv,
+            "redirect_csv": redirect_csv
+        }
+    )
+
+    return {
+        "html": html_path,
+        "title_csv": title_csv,
+        "redirect_csv": redirect_csv
+    }
 
 
 def _render_html(o) -> str:
