@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SEO Report Schema",
+  "type": "object",
+  "required": ["site", "urls_crawled", "summary", "issues", "fixes", "recommendations", "run_meta"],
+  "properties": {
+    "site": { "type": "string" },
+    "urls_crawled": { "type": "integer" },
+    "summary": {
+      "type": "object",
+      "required": ["total_issues", "by_severity"],
+      "properties": {
+        "total_issues": { "type": "integer" },
+        "by_severity": {
+          "type": "object",
+          "properties": {
+            "High": { "type": "integer" },
+            "Medium": { "type": "integer" },
+            "Low": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "severity", "affected_urls", "count", "explanation"],
+        "properties": {
+          "type": { "type": "string" },
+          "severity": { "enum": ["High", "Medium", "Low"] },
+          "affected_urls": { "type": "array", "items": { "type": "string" } },
+          "count": { "type": "integer" },
+          "explanation": { "type": "string" }
+        }
+      }
+    },
+    "fixes": {
+      "type": "object",
+      "required": ["titles", "meta_descriptions", "redirect_map"],
+      "properties": {
+        "titles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["url", "old", "new"],
+            "properties": {
+              "url": { "type": "string" },
+              "old": { "type": "string" },
+              "new": { "type": "string" }
+            }
+          }
+        },
+        "meta_descriptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["url", "old", "new"],
+            "properties": {
+              "url": { "type": "string" },
+              "old": { "type": "string" },
+              "new": { "type": "string" }
+            }
+          }
+        },
+        "redirect_map": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "reason"],
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "run_meta": {
+      "type": "object",
+      "required": ["model", "model_calls", "duration_sec"],
+      "properties": {
+        "model": { "type": "string" },
+        "model_calls": { "type": "integer" },
+        "duration_sec": { "type": "number" }
+      }
+    }
+  }
+}

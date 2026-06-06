@@ -1,105 +1,16 @@
-# PROMPTS.md — my key prompts log
+# Key Prompts Log
 
-Keep the handful of prompts that actually moved the build. Not every message — the ones that
-mattered: the system/sub-agent prompts, the ones you iterated on, the "this finally worked"
-moment. This shows how you direct an AI, which is graded (challenge brief section 08).
+## Hook Configuration
+**Prompt:** "Help me fix the issues reported by /doctor below. [List of Invalid input errors in settings.json]"
+**Result:** Identified missing `type: "shell"` in `.claude/settings.json`.
+**Outcome:** Success. All hooks validated.
 
-Format per entry:
-- **Prompt** (paste it)
-- **For:** what you were trying to do
-- **Revised?** did you have to change it, and why
+## Readiness Audit
+**Prompt:** "Review this SEO Command Center project against the challenge requirements and identify any missing detectors, validation issues, or scoring opportunities."
+**Result:** Comprehensive gap analysis showing missing schema, LLM bypass in fixer, and missing detectors.
+**Outcome:** Created a priority list for final improvements.
 
----
-
-## Example (replace with your own)
-
-- **Prompt:** "Extend seo/detector.py to detect redirect chains: build a map of {Address ->
-  Redirect URL} for all 3xx rows, then a chain exists when a Redirect URL is itself a key in
-  that map. Add a redirect_chain issue (High). Run python seo/detector.py and show counts."
-- **For:** adding the redirect-chain detector
-- **Revised?** Yes — first version flagged single redirects as chains; added the "target is
-  also a redirecting URL" condition.
-
----
-
-## My prompts
-
-### 1
-
-- **Prompt:** "Review seo/detector.py against the SEO rulebook and identify all missing detectors required for scoring."
-
-- **For:** Finding gaps between the starter implementation and the required SEO rulebook.
-
-- **Revised?** No.
-
----
-
-### 2
-
-- **Prompt:** "Implement the missing rulebook detectors while preserving the existing detector architecture and report output format."
-
-- **For:** Improving issue-detection accuracy without breaking the reporting pipeline.
-
-- **Revised?** Yes. The implementation was reorganized into title, meta, H1, content and redirect sections for maintainability.
-
----
-
-### 3
-
-- **Prompt:** "Validate detector output by running the sample export and compare issue coverage before and after implementation."
-
-- **For:** Verifying that new detectors increased audit coverage and did not break the audit workflow.
-
-- **Revised?** No.
-
----
-
-### 4
-
-- **Prompt:** "Review server.py and identify where fix generation should integrate into the existing architecture."
-
-- **For:** Planning title fixes, redirect maps and Ollama integration.
-
-- **Revised?** No.
-### 5
-
-- **Prompt:** "Review the fixer architecture and implement fix generation without breaking the reporting pipeline."
-
-- **For:** Adding title fixes and redirect map generation.
-
-- **Revised?** Yes. Started with deterministic fixes before introducing Ollama.
-### 6
-
-- **Prompt:** "Extend the fixer pipeline to generate title recommendations for duplicate, too-short and too-long titles instead of only missing titles."
-
-- **For:** Increasing fix coverage and populating the fixes section of report.json.
-
-- **Revised?** Yes. The first implementation only handled missing titles, but the sample export contained mostly duplicate and invalid-length titles.
-### 7
-
-- **Prompt:** "Export generated title fixes and redirect recommendations as CSV files suitable for direct client handoff."
-
-- **For:** Creating deliverables required by the competition's champion tier.
-
-- **Revised?** No.
-### 8
-
-- **Prompt:** "Extend the fixer to generate meta description recommendations for missing, duplicate and overlength meta descriptions."
-
-- **For:** Expanding the fix engine beyond title generation.
-
-- **Revised?** No.
-### 9
-
-- **Prompt:** "Restrict title and meta fix generation to text/html pages only."
-
-- **For:** Improving output quality and aligning fix generation with SEO audit rules.
-
-- **Revised?** Yes — initial implementation still generated fixes for assets because filtering was only applied to title fixes; extended filtering to meta fixes as well.
-### 10
-
-- **Prompt:** "Implement missing image alt detection using images_missing_alt_text.csv instead of internal_all.csv."
-
-- **For:** Extending detector coverage to match the challenge rulebook.
-
-- **Revised?** No.
+## Final Readiness Review
+**Prompt:** "Review the entire SEO Command Center project for submission readiness. Tasks: [Identify missing requirements, missing detectors, schema assumptions, CSV generation, bugs, prioritized improvements]."
+**Result:** Detailed breakdown of "Starter" state vs. "Champion" state, highlighting the critical gap in LLM-powered fix generation.
+**Outcome:** Defined the critical path to max score.
