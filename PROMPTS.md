@@ -89,3 +89,10 @@ Format per entry:
 - **For:** Expanding the fix engine beyond title generation.
 
 - **Revised?** No.
+### 9
+
+- **Prompt:** "Restrict title and meta fix generation to text/html pages only."
+
+- **For:** Improving output quality and aligning fix generation with SEO audit rules.
+
+- **Revised?** Yes — initial implementation still generated fixes for assets because filtering was only applied to title fixes; extended filtering to meta fixes as well.

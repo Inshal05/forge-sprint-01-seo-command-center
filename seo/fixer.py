@@ -17,6 +17,15 @@ def generate_title_fixes(rows):
     title_groups = defaultdict(list)
 
     for row in rows:
+
+        content_type = (
+            row.get("Content Type", "")
+            or ""
+        ).lower()
+
+        if "text/html" not in content_type:
+            continue
+
         title = (row.get("Title 1", "") or "").strip()
 
         if title:
@@ -29,6 +38,14 @@ def generate_title_fixes(rows):
     }
 
     for row in rows:
+
+        content_type = (
+            row.get("Content Type", "")
+            or ""
+        ).lower()
+
+        if "text/html" not in content_type:
+            continue
 
         url = row.get("Address", "")
         title = (row.get("Title 1", "") or "").strip()
@@ -76,13 +93,21 @@ def generate_title_fixes(rows):
             )
 
     return fixes
-
 def generate_meta_fixes(rows):
     fixes = []
 
     meta_groups = defaultdict(list)
 
     for row in rows:
+
+        content_type = (
+            row.get("Content Type", "")
+            or ""
+        ).lower()
+
+        if "text/html" not in content_type:
+            continue
+
         meta = (row.get("Meta Description 1", "") or "").strip()
 
         if meta:
@@ -95,6 +120,14 @@ def generate_meta_fixes(rows):
     }
 
     for row in rows:
+
+        content_type = (
+            row.get("Content Type", "")
+            or ""
+        ).lower()
+
+        if "text/html" not in content_type:
+            continue
 
         url = row.get("Address", "")
         h1 = (row.get("H1-1", "") or "").strip()
@@ -111,11 +144,16 @@ def generate_meta_fixes(rows):
         new_meta = None
 
         # Missing meta description
-        if not meta and h1:
+        if not meta:
 
-            new_meta = (
-                f"{h1} - Learn more about our services and solutions."
-            )
+            if h1:
+                new_meta = (
+                    f"{h1} - Learn more about our services and solutions."
+                )
+            else:
+                new_meta = (
+                    "Learn more about our services and solutions."
+                )
 
         # Meta description too long
         elif meta and meta_length > 155:
@@ -144,7 +182,6 @@ def generate_meta_fixes(rows):
                 )
 
     return fixes
-
 
 def generate_redirect_map(rows):
     redirects = []

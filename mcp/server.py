@@ -73,7 +73,11 @@ def _report_obj() -> dict:
         "urls_crawled": RUN["urls"],
         "summary": RUN["summary"] or {"total_issues": 0, "by_severity": {}},
         "issues": RUN["issues"],
-        "fixes": RUN.get("fixes", {"titles": [], "redirect_map": []}),
+        "fixes": {
+            "titles": RUN.get("fixes", {}).get("titles", []),
+            "meta_descriptions": RUN.get("meta_fixes", []),
+            "redirect_map": RUN.get("fixes", {}).get("redirect_map", [])
+        },
         "recommendations": RUN.get("recommendations", []),
         "run_meta": {"model": MODEL, "model_calls": RUN.get("model_calls", 0),
                      "duration_sec": RUN.get("duration_sec", 0)},
@@ -118,6 +122,7 @@ def seo_export() -> dict:
     fixes = report.get("fixes", {})
 
     titles = fixes.get("titles", [])
+    meta_fixes = fixes.get("meta_descriptions", [])
     redirects = fixes.get("redirect_map", [])
 
     title_csv = os.path.join(
@@ -145,7 +150,31 @@ def seo_export() -> dict:
 
         for row in titles:
             writer.writerow(row)
+    meta_csv = os.path.join(
+        OUT_DIR,
+        "meta_fixes.csv"
+    )
 
+    with open(
+        meta_csv,
+        "w",
+        newline="",
+        encoding="utf-8"
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "url",
+                "old",
+                "new"
+            ]
+        )
+
+        writer.writeheader()
+
+        for row in meta_fixes:
+            writer.writerow(row)
     redirect_csv = os.path.join(
         OUT_DIR,
         "redirect_map.csv"
@@ -177,6 +206,7 @@ def seo_export() -> dict:
         {
             "html": html_path,
             "title_csv": title_csv,
+            "meta_csv": meta_csv,
             "redirect_csv": redirect_csv
         }
     )
@@ -184,6 +214,7 @@ def seo_export() -> dict:
     return {
         "html": html_path,
         "title_csv": title_csv,
+        "meta_csv": meta_csv,
         "redirect_csv": redirect_csv
     }
 

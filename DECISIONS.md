@@ -42,3 +42,4 @@ Format:
   - [13:01] Expanded title fix generation beyond missing titles → added handling for duplicate, too-short and too-long titles so the fixer produces actionable recommendations on real exports.
   - [13:07] Added CSV fix exports → generated title_fixes.csv and redirect_map.csv from report fixes to create client-ready deliverables.
   - [13:22] Added meta description fix generation → created deterministic fixes for missing, duplicate and overlength meta descriptions to improve fix coverage before model integration.
+  - [14:15] Restricted title and meta fix generation to text/html pages only → prevented recommendations from being generated for images, CSS and other static assets.

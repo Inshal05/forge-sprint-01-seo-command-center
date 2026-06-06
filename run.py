@@ -36,13 +36,24 @@ def main():
     t0 = time.time()
     server.seo_load(args.export_dir)
     res = server.seo_detect()
-    title_fixes = fixer.generate_title_fixes(server.RUN["rows"])
-    redirect_map = fixer.generate_redirect_map(server.RUN["rows"])
+    title_fixes = fixer.generate_title_fixes(
+        server.RUN["rows"]
+    )
+
+    meta_fixes = fixer.generate_meta_fixes(
+        server.RUN["rows"]
+    )
+
+    redirect_map = fixer.generate_redirect_map(
+        server.RUN["rows"]
+    )
 
     server.seo_set_fixes(
         titles=title_fixes,
         redirect_map=redirect_map
     )
+
+    server.RUN["meta_fixes"] = meta_fixes
 
     # starter recommendations from the detected issues (the skill writes richer ones)
     issues = sorted(server.RUN["issues"], key=lambda x: {"High":0,"Medium":1,"Low":2}.get(x["severity"],3))
