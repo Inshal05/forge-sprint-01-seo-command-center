@@ -13,6 +13,7 @@ The model-driven fixes (title rewriting, redirect map) are left as a Sprint TODO
 starter writes empty fix blocks so the contract stays valid.
 """
 from __future__ import annotations
+from seo import fixer
 import argparse, os, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +36,13 @@ def main():
     t0 = time.time()
     server.seo_load(args.export_dir)
     res = server.seo_detect()
+    title_fixes = fixer.generate_title_fixes(server.RUN["rows"])
+    redirect_map = fixer.generate_redirect_map(server.RUN["rows"])
+
+    server.seo_set_fixes(
+        titles=title_fixes,
+        redirect_map=redirect_map
+    )
 
     # starter recommendations from the detected issues (the skill writes richer ones)
     issues = sorted(server.RUN["issues"], key=lambda x: {"High":0,"Medium":1,"Low":2}.get(x["severity"],3))
