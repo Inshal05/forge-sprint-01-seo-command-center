@@ -23,5 +23,41 @@ Format per entry:
 ---
 
 ## My prompts
-1. ...
-2. ...
+
+### 1
+
+- **Prompt:** "Review seo/detector.py against the SEO rulebook and identify all missing detectors required for scoring."
+
+- **For:** Finding gaps between the starter implementation and the required SEO rulebook.
+
+- **Revised?** No.
+
+---
+
+### 2
+
+- **Prompt:** "Implement the missing rulebook detectors while preserving the existing detector architecture and report output format."
+
+- **For:** Improving issue-detection accuracy without breaking the reporting pipeline.
+
+- **Revised?** Yes. The implementation was reorganized into title, meta, H1, content and redirect sections for maintainability.
+
+---
+
+### 3
+
+- **Prompt:** "Validate detector output by running the sample export and compare issue coverage before and after implementation."
+
+- **For:** Verifying that new detectors increased audit coverage and did not break the audit workflow.
+
+- **Revised?** No.
+
+---
+
+### 4
+
+- **Prompt:** "Review server.py and identify where fix generation should integrate into the existing architecture."
+
+- **For:** Planning title fixes, redirect maps and Ollama integration.
+
+- **Revised?** No.

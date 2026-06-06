@@ -1,34 +1,162 @@
-# CLAUDE.md — project memory for the SEO Command Center build
+# CLAUDE.md — SEO Command Center Project Memory
 
-This file is your **context / memory for the AI**. Claude Code loads it automatically every
-session. Strong builders engineer this file instead of re-explaining everything in chat — it
-is one of the clearest signals of good practice, and it is graded (see the challenge brief
-section 08). Keep it short, specific, and update it as you learn.
+## Project Goal
 
-Replace the prompts below with your own. This is YOUR file.
+Build a Claude Code plugin that ingests a Screaming Frog export, detects SEO issues using deterministic rules, prioritizes findings, generates fixes, serves a live dashboard on localhost:7700, and outputs:
 
-## What we are building
-A Claude Code plugin that ingests a Screaming Frog SEO export (`internal_all.csv` + issue
-CSVs), audits it against the rulebook, prioritizes issues, writes fixes, serves a live
-dashboard at localhost:7700, and outputs `outputs/report.json` + `outputs/report.html`.
+- outputs/report.json
+- outputs/report.html
 
-## Hard rules (the agent must follow these)
-- Detect issues in **plain Python** (csv/pandas). Use the model only for judgment
-  (rewriting titles/metas, choosing redirect targets). Never feed raw crawl rows to the model.
-- `outputs/report.json` MUST match `report.schema.json`. Validate before declaring done.
-- Filter to `text/html` + indexable pages before title/meta checks (see `rulebook.md`).
-- Do not hard-code anything to the sample export — it must work on an unseen export.
-- Keep model calls small and few (free-tier quota). One page per fix call.
+Target stack:
 
-## Architecture (keep it real)
-- `skills/seo-audit/SKILL.md` orchestrates. Sub-agents: ingest, auditor, fixer, reporter.
-- `seo/detector.py` = deterministic detectors (extend to the full rulebook — biggest score).
-- `mcp/server.py` = MCP tools + the live dashboard.
+- Claude Code
+- MCP Server
+- Ollama (qwen3.5:9b)
+- Local dashboard
+- Fully offline audit logic
 
-## Conventions
-- Commit after each working step with a real message.
-- Run `python run.py sample-export/` to test end to end.
+---
 
-## Things I have learned during the build (update this as you go)
-- (e.g. "SF leaves Title 1 blank on redirected URLs — must filter Status Code 200 first")
-- ...
+## Competition Constraints
+
+- Detection logic must be deterministic Python.
+- Never use LLMs for issue detection.
+- Use Ollama only for:
+  - title generation
+  - meta description generation
+  - redirect recommendations
+  - recommendation writing
+- report.json must match report.schema.json.
+- Must work on hidden exports.
+- Dashboard must update while audit runs.
+- Keep process logs, commits, prompts, and decisions updated.
+
+---
+
+## Current Architecture
+
+### Pipeline
+
+run.py
+
+load → detect → recommend → report → export
+
+### Detection Engine
+
+seo/detector.py
+
+Implemented detectors:
+
+- missing_title
+- duplicate_title
+- title_too_long
+- title_too_short
+- missing_meta_description
+- duplicate_meta_description
+- meta_description_too_long
+- missing_h1
+- duplicate_h1
+- broken_link
+- server_error
+- redirect
+- redirect_chain
+- orphan_page
+- thin_content
+- non_indexable_but_linked
+- slow_page
+
+### Reporting
+
+mcp/server.py
+
+Outputs:
+
+- report.json
+- report.html
+
+Dashboard:
+
+- localhost:7700
+
+---
+
+## Development Decisions
+
+### Detector Strategy
+
+Only evaluate title and meta issues on:
+
+- text/html pages
+- status code 200
+- indexable pages
+
+### Redirect Analysis
+
+Redirect chains detected through redirect graph traversal.
+
+Future improvement:
+
+- separate loops from chains
+- generate redirect suggestions
+
+### Duplicate Detection
+
+Use grouped URL collections to identify:
+
+- duplicate titles
+- duplicate meta descriptions
+- duplicate H1s
+
+---
+
+## Ollama Strategy
+
+Model:
+
+qwen3.5:9b
+
+Use only for:
+
+- title fixes
+- meta fixes
+- redirect recommendations
+
+Never use Ollama for:
+
+- issue detection
+- counting issues
+- severity assignment
+- crawl analysis
+
+---
+
+## Validation Checklist
+
+Before every commit:
+
+- Run python run.py ../sample-export
+- Verify report.json exists
+- Verify report.html exists
+- Verify dashboard loads
+- Verify issue counts are reasonable
+
+Before submission:
+
+- Validate report.json against schema
+- Verify audit.jsonl exists
+- Verify agent-log.md exported
+- Verify CLAUDE.md updated
+- Verify PROMPTS.md updated
+- Verify DECISIONS.md updated
+- Verify 10+ commits exist
+
+---
+
+## Build Learnings
+
+- Starter bundle only implemented a subset of the SEO rulebook.
+- Issue detection accuracy is the most valuable scoring category.
+- Deterministic rules are more reliable than LLM analysis for crawl data.
+- report generation already exists in server.py.
+- seo_set_fixes() is the intended hook for title fixes and redirect maps.
+- Hidden export compatibility is more important than optimizing for the sample export.

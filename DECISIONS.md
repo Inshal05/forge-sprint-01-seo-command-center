@@ -22,4 +22,19 @@ Format:
 ---
 
 ## My log
-- `[--:--]` ...
+
+  - [12:15] Compared `seo/detector.py` against the SEO rulebook → identified multiple missing detectors affecting audit coverage and hidden-export accuracy.
+
+  - [12:15] Implemented additional rulebook detectors → added title_too_short, missing_meta_description, duplicate_meta_description, meta_description_too_long, missing_h1, duplicate_h1, thin_content, non_indexable_but_linked, slow_page, and redirect_chain.
+
+  - [12:16] Re-ran the sample export after detector updates → issue coverage increased from 4 detected issue types to 12 issue types while maintaining successful report generation.
+
+  - [12:17] Added repository cleanup improvements → updated .gitignore and removed cache files before continuing implementation.
+
+  - [12:18] Reviewed outputs/report.json after detector changes → verified output structure remained compatible with the required report contract.
+
+  - [12:19] Inspected server.py reporting pipeline → identified seo_set_fixes() as the intended integration point for title fixes and redirect map generation.
+
+  - [12:20] Updated CLAUDE.md project memory → documented architecture, detector strategy, validation workflow, and Ollama usage guidelines.
+
+  - [12:21] Decided to keep issue detection fully deterministic → reserve Ollama exclusively for title generation, meta generation, redirect recommendations, and report enhancements.
